@@ -8,11 +8,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Optional;
-
+@Controller
 public class JWTFilter extends OncePerRequestFilter {
     private JWTService jwtService;
     private AppUserRepository userRepository;
@@ -34,6 +38,12 @@ public class JWTFilter extends OncePerRequestFilter {
             Optional<AppUser> opUser = userRepository.findByUsername(userName);
             if (opUser.isPresent()){
                 AppUser appUser = opUser.get();
+
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(appUser, null, null);
+                authenticationToken.setDetails(new WebAuthenticationDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                //granting him access
 
             }
 
