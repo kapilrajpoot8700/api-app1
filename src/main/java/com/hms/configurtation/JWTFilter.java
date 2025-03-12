@@ -21,8 +21,9 @@ public class JWTFilter extends OncePerRequestFilter {
     private JWTService jwtService;
     private AppUserRepository userRepository;
 
-    public JWTFilter(JWTService jwtService) {
+    public JWTFilter(JWTService jwtService, AppUserRepository userRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @Override

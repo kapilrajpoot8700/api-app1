@@ -20,9 +20,10 @@ public class JWTService {
     private String issuer;
 
     @Value("${jwt.expiry.time}")
-    private int time;
+    private long time;
 
     private Algorithm algorithm;
+
     @PostConstruct
     public void postContruct() throws UnsupportedEncodingException {
         algorithm=Algorithm.HMAC256(algorithmKey);
