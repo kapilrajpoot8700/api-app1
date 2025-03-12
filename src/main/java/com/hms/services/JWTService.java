@@ -15,8 +15,10 @@ public class JWTService {
 
     @Value("${jwt.algorithm.key}")
     private String algorithmKey;
+
     @Value("${jwt.issuer}")
     private String issuer;
+
     @Value("${jwt.expiry.time}")
     private int time;
 
