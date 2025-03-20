@@ -25,9 +25,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable();
         http.addFilterBefore(jwtFilter, AuthorizationFilter.class);
-        http.authorizeHttpRequests()
-        .requestMatchers("/api/v1/users/signIn","/api/v1/users/login").permitAll();
-        http.authorizeHttpRequests().anyRequest().authenticated();
+        http.authorizeHttpRequests().anyRequest().permitAll();
+//        .requestMatchers("/api/v1/users/signUp","/api/v1/users/login","/api/v1/users/signUp-propertyOwner")
+//                .permitAll().
+//       requestMatchers("/api/v1/country").hasAnyRole("OWNER","ADMIN","USER")
+//                .anyRequest().authenticated();
 
         return http.build();
     }

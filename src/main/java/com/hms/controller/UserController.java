@@ -39,11 +39,30 @@ public class UserController {
         }
         String hashpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(6));
         user.setPassword(hashpw);
+        user.setRole("ROLE_USER");
         AppUser save = appUserRepository.save(user);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
+    @PostMapping("/signUp-propertyOwner")
+    public ResponseEntity<?> createPropertyOwner(
+            @RequestBody AppUser user
+    ) {
+        Optional<AppUser> opUsername = appUserRepository.findByUsername(user.getUsername());
+        Optional<AppUser> opEmail = appUserRepository.findByEmail(user.getEmail());
 
+        if (opUsername.isPresent()) {
+            return new ResponseEntity<>("user alredy taken", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (opEmail.isPresent()) {
+            return new ResponseEntity<>("email alredy taken", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        String hashpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(6));
+        user.setPassword(hashpw);
+        user.setRole("ROLE_ADMIN");
+        AppUser save = appUserRepository.save(user);
+        return new ResponseEntity<>(save, HttpStatus.CREATED);
+    }
     @PostMapping("/login")
     public ResponseEntity<?> verifyLogin(@RequestBody LoginDto dto) {
         TokenDto token=  userService.verifyLogin(dto);
